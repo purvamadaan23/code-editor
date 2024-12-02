@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",      // Build also handles export automatically
-    "deploy": "npm run build",  // Just run build for deployment
+    "build": "next build",      
+    "deploy": "npm run build", 
     "start": "next start",
     "lint": "next lint"
   },
