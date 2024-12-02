@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo, useRef } from "react";
 import { EditorView } from "@codemirror/view";
 import { EditorState, Extension } from "@codemirror/state"; // Import Extension properly
@@ -75,7 +74,7 @@ const CodeEditor = () => {
   };
 
   return (
-    <div className={`flex h-screen ${theme === "dark" ? "bg-black" : "bg-gray-100"}`}>
+    <div className={`flex h-screen ${theme === "dark" ? "bg-zinc-500" : "bg-gray-100"}`}>
       <div className="w-20 bg-gray-900 text-white flex flex-col items-center py-4">
         {Object.keys(languageIcons).map((lang) => (
           <button
@@ -109,36 +108,47 @@ const CodeEditor = () => {
           max="600"
           value={outputWidth}
           onChange={handleOutputResize}
-          className="w-3/4"
+          className="w-2/4"
         />
       </div>
 
-      <div className="absolute top-4 right-4 flex gap-2">
-        <button
-          className={`p-2 border-2 border-white ${theme === "dark" ? "text-white" : "text-black"} rounded hover:bg-gray-600`}
-          onClick={simulateOutput}
-        >
-          Run
-        </button>
-        <button
-          className={`p-2 border-2 border-white ${theme === "dark" ? "text-white" : "text-black"} rounded hover:bg-gray-600`}
-          onClick={() => setOutput("Output cleared!")}
-        >
-          Clear
-        </button>
-        <button
-          className="p-4 mt-auto mb-2 hover:bg-gray-700 rounded-full"
-          onClick={toggleTheme}
-        >
-          {theme === "dark" ? <FaSun className="text-white text-2xl" /> : <FaMoon className="text-white text-2xl" />}
-        </button>
+      <div className="absolute top-3 right-4 flex gap-2">
+      <div className="absolute top-3 right-4 flex flex-col gap-2">
+      <button
+  className={`px-4 py-0.5 border-2 border-black ${theme === "dark" ? "text-white" : "text-black"} bg-gray-500 hover:bg-gray-600 rounded-full`}
+  onClick={toggleTheme}
+>
+  {theme === "dark" ? <FaSun className="text-white text-2xl" /> : <FaMoon className="text-black text-2xl" />}
+</button>
+
+
+
+  <button
+    className={`p-2 border-2 border-black ${theme === "dark" ? "text-white" : "text-black"} rounded hover:bg-gray-600`}
+    onClick={simulateOutput}
+  >
+    Run
+  </button>
+
+  <button
+    className={`px-4 py-0.5 border-2 border-black ${theme === "dark" ? "text-white" : "text-black"} rounded hover:bg-gray-600`}
+    onClick={() => setOutput("Output cleared!")}
+  >
+    Clear
+  </button>
+</div>
+
+
+{/* <button
+  className={`px-4 py-0.5 border-2 border-black ${theme === "dark" ? "text-white" : "text-black"} hover:bg-gray-600 rounded-full`}
+  onClick={toggleTheme}
+>
+  {theme === "dark" ? <FaSun className="text-white text-2xl" /> : <FaMoon className="text-white text-2xl" />}
+</button> */}
+
       </div>
     </div>
   );
 };
 
 export default CodeEditor;
-
-
-
-
