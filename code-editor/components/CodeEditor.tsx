@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
@@ -10,15 +11,17 @@ import { go } from "@codemirror/lang-go";
 
 import { FaJs, FaPython, FaPhp, FaRust, FaSwift, FaCuttlefish, FaCode, FaSun, FaMoon } from "react-icons/fa";
 
+type Language = "javascript" | "python" | "php" | "rust" | "c++" | "go";
+
 const CodeEditor = () => {
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState<Language>("javascript");
   const [outputWidth, setOutputWidth] = useState(400);
   const [output, setOutput] = useState("Code Execution Successful!");
   const [theme, setTheme] = useState("light");
 
   const editorRef = useRef<EditorView | null>(null);
 
-  const languageExtensions = {
+  const languageExtensions: Record<Language, any> = {
     javascript: javascript(),
     python: python(),
     php: php(),
@@ -27,17 +30,15 @@ const CodeEditor = () => {
     go: go(),
   };
 
-  const languageIcons = {
+  const languageIcons: Record<Language, JSX.Element> = {
     javascript: <FaJs className="text-yellow-400 text-2xl" />,
     python: <FaPython className="text-blue-500 text-2xl" />,
     php: <FaPhp className="text-indigo-500 text-2xl" />,
     rust: <FaRust className="text-orange-500 text-2xl" />,
-    swift: <FaSwift className="text-red-500 text-2xl" />,
     "c++": <FaCuttlefish className="text-purple-500 text-2xl" />,
     go: <FaCode className="text-cyan-500 text-2xl" />,
   };
 
-  // Set up the editor instance
   useEffect(() => {
     const newEditor = new EditorView({
       state: EditorState.create({
@@ -52,49 +53,40 @@ const CodeEditor = () => {
     return () => {
       newEditor.destroy();
     };
-  }, [language, languageExtensions]); // Included languageExtensions in the dependency array
+  }, [language]); // Dependency array simplified
 
-  // Simulate output based on code
   const simulateOutput = () => {
     if (!editorRef.current) return;
-
-    // Placeholder logic for output
     setOutput("Code Execution Successful!");
   };
 
-  // Resize output panel
   const handleOutputResize = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOutputWidth(parseInt(e.target.value, 10));
   };
 
-  // Toggle between light and dark themes
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
   return (
     <div className={`flex h-screen ${theme === "dark" ? "bg-black" : "bg-gray-100"}`}>
-      {/* Sidebar for language selection */}
       <div className="w-20 bg-gray-900 text-white flex flex-col items-center py-4">
         {Object.keys(languageIcons).map((lang) => (
           <button
             key={lang}
             className={`p-4 hover:bg-gray-700 rounded-lg mb-2 ${lang === language ? "bg-gray-700" : ""}`}
-            onClick={() => setLanguage(lang)}
+            onClick={() => setLanguage(lang as Language)}
           >
-            {languageIcons[lang]}
+            {languageIcons[lang as Language]}
           </button>
         ))}
       </div>
 
-      {/* Main content */}
       <div className="flex-1 flex">
-        {/* Code editor */}
         <div className="flex-1 p-4 border-r border-gray-300">
           <div id="editor" className="h-full" />
         </div>
 
-        {/* Output panel */}
         <div
           className="bg-gray-200 text-black p-4 flex-shrink-0"
           style={{ width: `${outputWidth}px`, height: "100%", overflow: "auto" }}
@@ -104,7 +96,6 @@ const CodeEditor = () => {
         </div>
       </div>
 
-      {/* Output resize control */}
       <div className="flex justify-center p-2">
         <input
           type="range"
@@ -116,7 +107,6 @@ const CodeEditor = () => {
         />
       </div>
 
-      {/* Run and Clear Buttons */}
       <div className="absolute top-4 right-4 flex gap-2">
         <button
           className={`p-2 border-2 border-white ${theme === "dark" ? "text-white" : "text-black"} rounded hover:bg-gray-600`}
