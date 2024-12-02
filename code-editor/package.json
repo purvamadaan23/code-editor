@@ -4,37 +4,28 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "export": "next export",                
-    "deploy": "npm run build && npm run export",  
+    "build": "next build",      // Build also handles export automatically
+    "deploy": "npm run build",  // Just run build for deployment
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@codemirror/lang-cpp": "^6.0.2",
-    "@codemirror/lang-go": "^6.0.1",
-    "@codemirror/lang-java": "^6.0.1",
-    "@codemirror/lang-javascript": "^6.2.2",
-    "@codemirror/lang-php": "^6.0.1",
-    "@codemirror/lang-python": "^6.1.6",
-    "@codemirror/lang-rust": "^6.0.1",
-    "@codemirror/state": "^6.4.1",
-    "@codemirror/theme-one-dark": "^6.1.2",
-    "@codemirror/view": "^6.35.0",
-    "codemirror": "^6.0.1",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
-    "react-icons": "^5.3.0"
+    "react-icons": "^5.3.0",
+    "codemirror": "^6.0.1",
+    "@codemirror/state": "^6.4.1",
+    "@codemirror/view": "^6.35.0",
+    "@codemirror/lang-cpp": "^6.0.2",
+    "@codemirror/lang-javascript": "^6.2.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "typescript": "^5",
     "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.3",
-    "postcss": "^8",
+    "@types/node": "^20",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3"
   }
 }
