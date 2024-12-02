@@ -1,6 +1,7 @@
 
+
 import { useState, useEffect, useMemo, useRef } from "react";
-import { EditorView, basicSetup } from "codemirror";
+import { EditorView, basicSetup, Extension } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
@@ -22,18 +23,15 @@ const CodeEditor = () => {
 
   const editorRef = useRef<EditorView | null>(null);
 
-  // Use useMemo to memoize language extensions
-  const languageExtensions = useMemo(() => {
-    const extensions: Record<Language, any> = {
-      javascript: javascript(),
-      python: python(),
-      php: php(),
-      rust: rust(),
-      "c++": cpp(),
-      go: go(),
-    };
-    return extensions;
-  }, []);
+  // Define language extensions using a more precise type
+  const languageExtensions: Record<Language, Extension> = useMemo(() => ({
+    javascript: javascript(),
+    python: python(),
+    php: php(),
+    rust: rust(),
+    "c++": cpp(),
+    go: go(),
+  }), []);
 
   const languageIcons: Record<Language, JSX.Element> = {
     javascript: <FaJs className="text-yellow-400 text-2xl" />,
@@ -139,4 +137,5 @@ const CodeEditor = () => {
 };
 
 export default CodeEditor;
+
 
