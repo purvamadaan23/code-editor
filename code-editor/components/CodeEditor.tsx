@@ -1,8 +1,6 @@
-
 import { useState, useEffect, useMemo, useRef } from "react";
 import { EditorView } from "@codemirror/view";
 import { EditorState } from "@codemirror/state";
-import { basicSetup } from "@codemirror/basic-setup";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
 import { php } from "@codemirror/lang-php";
@@ -49,7 +47,7 @@ const CodeEditor = () => {
     const newEditor = new EditorView({
       state: EditorState.create({
         doc: `// Write your ${language} code here...`,
-        extensions: [basicSetup, languageExtensions],
+        extensions: [languageExtensions],
       }),
       parent: document.getElementById("editor")!,
     });
@@ -139,4 +137,7 @@ const CodeEditor = () => {
 };
 
 export default CodeEditor;
+
+
+
 
