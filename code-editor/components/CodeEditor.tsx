@@ -12,13 +12,13 @@ import { FaJs, FaPython, FaPhp, FaRust, FaSwift, FaCuttlefish, FaCode, FaSun, Fa
 
 const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
-  const [outputWidth, setOutputWidth] = useState(400); // Width of the output panel
+  const [outputWidth, setOutputWidth] = useState(400);
   const [output, setOutput] = useState("Code Execution Successful!");
-  const [theme, setTheme] = useState("light"); // light or dark theme
+  const [theme, setTheme] = useState("light");
 
   const editorRef = useRef<EditorView | null>(null);
 
-  const languages = {
+  const languageExtensions = {
     javascript: javascript(),
     python: python(),
     php: php(),
@@ -35,7 +35,6 @@ const CodeEditor = () => {
     swift: <FaSwift className="text-red-500 text-2xl" />,
     "c++": <FaCuttlefish className="text-purple-500 text-2xl" />,
     go: <FaCode className="text-cyan-500 text-2xl" />,
-    typescript: <FaJs className="text-blue-400 text-2xl" />,
   };
 
   // Set up the editor instance
@@ -43,7 +42,7 @@ const CodeEditor = () => {
     const newEditor = new EditorView({
       state: EditorState.create({
         doc: `// Write your ${language} code here...`,
-        extensions: [basicSetup, languages[language]],
+        extensions: [basicSetup, languageExtensions[language]],
       }),
       parent: document.getElementById("editor")!,
     });
@@ -53,14 +52,14 @@ const CodeEditor = () => {
     return () => {
       newEditor.destroy();
     };
-  }, [language]); // 'languages' removed from dependency array
+  }, [language, languageExtensions]); // Included languageExtensions in the dependency array
 
   // Simulate output based on code
   const simulateOutput = () => {
     if (!editorRef.current) return;
 
-    const code = editorRef.current.state.doc.toString();
-    setOutput("Code Execution Successful!"); // Placeholder output
+    // Placeholder logic for output
+    setOutput("Code Execution Successful!");
   };
 
   // Resize output panel
