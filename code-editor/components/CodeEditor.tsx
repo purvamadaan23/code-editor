@@ -9,8 +9,9 @@ import { rust } from "@codemirror/lang-rust";
 import { cpp } from "@codemirror/lang-cpp";
 import { go } from "@codemirror/lang-go";
 
-import { FaJs, FaPython, FaPhp, FaRust, FaSwift, FaCuttlefish, FaCode, FaSun, FaMoon } from "react-icons/fa";
+import { FaJs, FaPython, FaPhp, FaRust, FaCuttlefish, FaCode, FaSun, FaMoon } from "react-icons/fa";
 
+// Define the possible languages
 type Language = "javascript" | "python" | "php" | "rust" | "c++" | "go";
 
 const CodeEditor = () => {
@@ -21,6 +22,7 @@ const CodeEditor = () => {
 
   const editorRef = useRef<EditorView | null>(null);
 
+  // Define language extensions with proper types
   const languageExtensions: Record<Language, any> = {
     javascript: javascript(),
     python: python(),
@@ -40,6 +42,7 @@ const CodeEditor = () => {
   };
 
   useEffect(() => {
+    // Create the editor with the selected language extension
     const newEditor = new EditorView({
       state: EditorState.create({
         doc: `// Write your ${language} code here...`,
@@ -50,10 +53,11 @@ const CodeEditor = () => {
 
     editorRef.current = newEditor;
 
+    // Clean up the editor when the component is unmounted
     return () => {
       newEditor.destroy();
     };
-  }, [language]); // Dependency array simplified
+  }, [language, languageExtensions]); // Add languageExtensions to dependencies
 
   const simulateOutput = () => {
     if (!editorRef.current) return;
