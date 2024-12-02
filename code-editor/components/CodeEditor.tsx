@@ -1,15 +1,14 @@
 
-
 import { useState, useEffect, useMemo, useRef } from "react";
-import { EditorView, basicSetup, Extension } from "codemirror";
+import { EditorView } from "@codemirror/view";
 import { EditorState } from "@codemirror/state";
+import { basicSetup } from "@codemirror/basic-setup";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
 import { php } from "@codemirror/lang-php";
 import { rust } from "@codemirror/lang-rust";
 import { cpp } from "@codemirror/lang-cpp";
 import { go } from "@codemirror/lang-go";
-
 import { FaJs, FaPython, FaPhp, FaRust, FaCuttlefish, FaCode, FaSun, FaMoon } from "react-icons/fa";
 
 // Define the possible languages
@@ -24,14 +23,17 @@ const CodeEditor = () => {
   const editorRef = useRef<EditorView | null>(null);
 
   // Define language extensions using a more precise type
-  const languageExtensions: Record<Language, Extension> = useMemo(() => ({
-    javascript: javascript(),
-    python: python(),
-    php: php(),
-    rust: rust(),
-    "c++": cpp(),
-    go: go(),
-  }), []);
+  const languageExtensions = useMemo(() => {
+    const languageExtensionsMap: Record<Language, EditorState.Extension> = {
+      javascript: javascript(),
+      python: python(),
+      php: php(),
+      rust: rust(),
+      "c++": cpp(),
+      go: go(),
+    };
+    return languageExtensionsMap[language];
+  }, [language]); // Memoize based on language
 
   const languageIcons: Record<Language, JSX.Element> = {
     javascript: <FaJs className="text-yellow-400 text-2xl" />,
@@ -47,7 +49,7 @@ const CodeEditor = () => {
     const newEditor = new EditorView({
       state: EditorState.create({
         doc: `// Write your ${language} code here...`,
-        extensions: [basicSetup, languageExtensions[language]],
+        extensions: [basicSetup, languageExtensions],
       }),
       parent: document.getElementById("editor")!,
     });
@@ -137,5 +139,4 @@ const CodeEditor = () => {
 };
 
 export default CodeEditor;
-
 
