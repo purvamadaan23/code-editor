@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next export",                // Added for static export
+    "deploy": "npm run build && npm run export",  // Combined build & export for deployment
     "start": "next start",
     "lint": "next lint"
   },
