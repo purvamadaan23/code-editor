@@ -8,34 +8,23 @@ import { rust } from "@codemirror/lang-rust";
 import { cpp } from "@codemirror/lang-cpp";
 import { go } from "@codemirror/lang-go";
 
-import {
-  FaJs,
-  FaPython,
-  FaPhp,
-  FaRust,
-  FaCuttlefish,
-  FaCode,
-  FaSun,
-  FaMoon,
-} from "react-icons/fa";
+import { FaJs, FaPython, FaPhp, FaRust, FaSwift, FaCuttlefish, FaCode, FaSun, FaMoon } from "react-icons/fa";
 
 const CodeEditor = () => {
-  const [editor, setEditor] = useState<EditorView | null>(null);
   const [language, setLanguage] = useState("javascript");
-  const [outputWidth, setOutputWidth] = useState(540); // Default to 60% of the range (300-600)
+  const [outputWidth, setOutputWidth] = useState(400); // Width of the output panel
   const [output, setOutput] = useState("Code Execution Successful!");
   const [theme, setTheme] = useState("light"); // light or dark theme
 
   const editorRef = useRef<EditorView | null>(null);
 
-  // Define available languages with their extensions
   const languages = {
-    javascript: javascript,
-    python: python,
-    php: php,
-    rust: rust,
-    "c++": cpp,
-    go: go,
+    javascript: javascript(),
+    python: python(),
+    php: php(),
+    rust: rust(),
+    "c++": cpp(),
+    go: go(),
   };
 
   const languageIcons = {
@@ -43,8 +32,10 @@ const CodeEditor = () => {
     python: <FaPython className="text-blue-500 text-2xl" />,
     php: <FaPhp className="text-indigo-500 text-2xl" />,
     rust: <FaRust className="text-orange-500 text-2xl" />,
+    swift: <FaSwift className="text-red-500 text-2xl" />,
     "c++": <FaCuttlefish className="text-purple-500 text-2xl" />,
     go: <FaCode className="text-cyan-500 text-2xl" />,
+    typescript: <FaJs className="text-blue-400 text-2xl" />,
   };
 
   // Set up the editor instance
@@ -52,27 +43,24 @@ const CodeEditor = () => {
     const newEditor = new EditorView({
       state: EditorState.create({
         doc: `// Write your ${language} code here...`,
-        extensions: [basicSetup, languages[language]()],
+        extensions: [basicSetup, languages[language]],
       }),
       parent: document.getElementById("editor")!,
     });
 
     editorRef.current = newEditor;
-    setEditor(newEditor);
 
     return () => {
       newEditor.destroy();
     };
-  }, [language]);
+  }, [language]); // 'languages' removed from dependency array
 
   // Simulate output based on code
   const simulateOutput = () => {
     if (!editorRef.current) return;
 
     const code = editorRef.current.state.doc.toString();
-
-    // Placeholder logic for output (you can enhance this based on real execution)
-    setOutput(`You wrote: ${code}`);
+    setOutput("Code Execution Successful!"); // Placeholder output
   };
 
   // Resize output panel
@@ -86,29 +74,13 @@ const CodeEditor = () => {
   };
 
   return (
-    <div className={`flex h-screen ${theme === "dark" ? "bg-slate-700" : "bg-gray-100"}`}>
-      {/* Theme Toggle Button at the top-right corner */}
-      <button
-        className={`absolute top-4 right-4 p-4 hover:bg-gray-700 rounded-full z-10 ${
-          theme === "dark" ? "bg-gray-900" : "bg-gray-200"
-        }`}
-        onClick={toggleTheme}
-      >
-        {theme === "dark" ? (
-          <FaSun className="text-white text-2xl" />
-        ) : (
-          <FaMoon className="text-black text-2xl" />
-        )}
-      </button>
-
+    <div className={`flex h-screen ${theme === "dark" ? "bg-black" : "bg-gray-100"}`}>
       {/* Sidebar for language selection */}
       <div className="w-20 bg-gray-900 text-white flex flex-col items-center py-4">
         {Object.keys(languageIcons).map((lang) => (
           <button
             key={lang}
-            className={`p-4 hover:bg-gray-700 rounded-lg mb-2 ${
-              lang === language ? "bg-gray-700" : ""
-            }`}
+            className={`p-4 hover:bg-gray-700 rounded-lg mb-2 ${lang === language ? "bg-gray-700" : ""}`}
             onClick={() => setLanguage(lang)}
           >
             {languageIcons[lang]}
@@ -131,37 +103,39 @@ const CodeEditor = () => {
           <strong>Output:</strong>
           <p>{output}</p>
         </div>
+      </div>
 
-        {/* Output resize control */}
-        <div className="flex justify-center p-2">
-          <input
-            type="range"
-            min="300"
-            max="600"
-            value={outputWidth}
-            onChange={handleOutputResize}
-            className="w-3/4"
-          />
-        </div>
+      {/* Output resize control */}
+      <div className="flex justify-center p-2">
+        <input
+          type="range"
+          min="300"
+          max="600"
+          value={outputWidth}
+          onChange={handleOutputResize}
+          className="w-3/4"
+        />
       </div>
 
       {/* Run and Clear Buttons */}
-      <div className="absolute bottom-4 right-4 flex gap-2">
+      <div className="absolute top-4 right-4 flex gap-2">
         <button
-          className={`p-2 border-2 border-white ${
-            theme === "dark" ? "text-white" : "text-black"
-          } rounded hover:bg-gray-600`}
+          className={`p-2 border-2 border-white ${theme === "dark" ? "text-white" : "text-black"} rounded hover:bg-gray-600`}
           onClick={simulateOutput}
         >
           Run
         </button>
         <button
-          className={`p-2 border-2 border-white ${
-            theme === "dark" ? "text-white" : "text-black"
-          } rounded hover:bg-gray-600`}
+          className={`p-2 border-2 border-white ${theme === "dark" ? "text-white" : "text-black"} rounded hover:bg-gray-600`}
           onClick={() => setOutput("Output cleared!")}
         >
           Clear
+        </button>
+        <button
+          className="p-4 mt-auto mb-2 hover:bg-gray-700 rounded-full"
+          onClick={toggleTheme}
+        >
+          {theme === "dark" ? <FaSun className="text-white text-2xl" /> : <FaMoon className="text-white text-2xl" />}
         </button>
       </div>
     </div>
