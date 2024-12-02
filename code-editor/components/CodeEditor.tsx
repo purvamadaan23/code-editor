@@ -1,6 +1,7 @@
+
 import { useState, useEffect, useMemo, useRef } from "react";
 import { EditorView } from "@codemirror/view";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state"; // Import Extension properly
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
 import { php } from "@codemirror/lang-php";
@@ -22,7 +23,7 @@ const CodeEditor = () => {
 
   // Define language extensions using a more precise type
   const languageExtensions = useMemo(() => {
-    const languageExtensionsMap: Record<Language, EditorState.Extension> = {
+    const languageExtensionsMap: Record<Language, Extension> = {
       javascript: javascript(),
       python: python(),
       php: php(),
